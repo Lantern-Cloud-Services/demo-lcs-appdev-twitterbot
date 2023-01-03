@@ -90,6 +90,8 @@ namespace Lcs.TwitterPoster
             String reqQueryName  = "query";
             String reqQuery      = System.Environment.GetEnvironmentVariable($"reqQuery");
             String reqSinceName  = "since_id";
+            
+            // rework since, if longer than 7 seven days ommit
             String reqSince      = aReqSince;
             String reqFieldsName = "tweet.fields";
             String reqFields     = System.Environment.GetEnvironmentVariable($"reqFields");
