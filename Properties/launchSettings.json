@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "demo_lcs_appdev_twitterposter_la": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7209",
+      "launchBrowser": false
+    }
+  }
+}
