@@ -90,6 +90,8 @@ namespace Lcs.TwitterPoster
             String reqQueryName  = "query";
             String reqQuery      = System.Environment.GetEnvironmentVariable($"reqQuery");
             String reqSinceName  = "since_id";
+            
+            // rework since, if longer than 7 seven days ommit
             String reqSince      = aReqSince;
             String reqFieldsName = "tweet.fields";
             String reqFields     = System.Environment.GetEnvironmentVariable($"reqFields");
@@ -104,7 +106,11 @@ namespace Lcs.TwitterPoster
             request.AddHeader("Content-Type", "application/json");  
                     
             request.AddQueryParameter(reqQueryName, reqQuery);
-            request.AddQueryParameter(reqSinceName, reqSince);
+            
+            if (null != aReqSince && !aReqSince.Equals(""))
+            {
+                request.AddQueryParameter(reqSinceName, reqSince);                
+            }
             request.AddQueryParameter(reqFieldsName, reqFields);
             RestResponse response = client.Execute(request);
 
@@ -152,7 +158,12 @@ namespace Lcs.TwitterPoster
             // check TTL
             DateTimeOffset now = DateTimeOffset.UtcNow;
             long unixTimeMilliseconds = now.ToUnixTimeMilliseconds();
-
+            
+            if (aStateHelper.stateTimeStamp < (unixTimeMilliseconds - 604800100))
+            {
+                aStateHelper.lastProcessedId = "";
+            }
+            
             if (aStateHelper.state.Equals("in progress"))
             {
                 //sLog.LogInformation("Processor is in progress!");
