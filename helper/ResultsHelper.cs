@@ -29,6 +29,7 @@ namespace Lcs.TwitterPoster
     public class StateHelper
     {
         public String lastProcessedId {get; set;}
+        public long lastProcessedTimeStamp {get; set;}
         public String state {get; set;}
         public long stateTimeStamp {get; set;}
         public int ttl {get; set;}

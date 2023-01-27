@@ -23,7 +23,7 @@ namespace Lcs.TwitterPoster
 
             var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
-            String URL            = System.Environment.GetEnvironmentVariable($"twitterPOSTURL");
+            String URL = System.Environment.GetEnvironmentVariable($"twitterPOSTURL");
 
             OAuthUtils oaUtils = new OAuthUtils();            
             OAuth1Authenticator oAuth1 = oaUtils.GetOAuth1Authenticator();

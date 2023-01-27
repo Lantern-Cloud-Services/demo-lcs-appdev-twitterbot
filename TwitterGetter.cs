@@ -159,7 +159,13 @@ namespace Lcs.TwitterPoster
             DateTimeOffset now = DateTimeOffset.UtcNow;
             long unixTimeMilliseconds = now.ToUnixTimeMilliseconds();
             
-            if (aStateHelper.stateTimeStamp < (unixTimeMilliseconds - 604800100))
+            // TODO add a field to db for action timestamp
+            //long lastActionTimeStamp = 1673061067000;
+            long lastActionTimeStamp = aStateHelper.lastProcessedTimeStamp;
+            long millisSinceLastAction = unixTimeMilliseconds - lastActionTimeStamp; 
+            sLog.LogInformation("Millis since last action: " + millisSinceLastAction);
+            
+            if (millisSinceLastAction > 604800100)
             {
                 aStateHelper.lastProcessedId = "";
             }
