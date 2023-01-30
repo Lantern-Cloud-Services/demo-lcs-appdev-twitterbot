@@ -75,6 +75,20 @@ namespace Lcs.TwitterPoster
                 return new OkObjectResult(JsonConvert.SerializeObject(emptyResult));
             }
 
+            foreach (DataHelper dh in processList)
+            {
+                DateTime dateTime = DateTime.ParseExact(dh.created_at, "yyyy-MM-ddTHH:mm:ss.000Z", System.Globalization.CultureInfo.InvariantCulture);
+
+                TimeSpan t = dateTime - new DateTime(1970, 1, 1);
+                long epochMilis = (long)t.TotalMilliseconds;
+                sLog.LogInformation("DateTime: " + epochMilis);
+
+                if (stateHelper.lastProcessedTimeStamp < epochMilis)
+                {
+                    stateHelper.lastProcessedTimeStamp = epochMilis;
+                }
+            }
+
             ResultsHelper result = new ResultsHelper();
             result.meta = resultsHelper.meta;
             result.data = processList;
@@ -159,8 +173,6 @@ namespace Lcs.TwitterPoster
             DateTimeOffset now = DateTimeOffset.UtcNow;
             long unixTimeMilliseconds = now.ToUnixTimeMilliseconds();
             
-            // TODO add a field to db for action timestamp
-            //long lastActionTimeStamp = 1673061067000;
             long lastActionTimeStamp = aStateHelper.lastProcessedTimeStamp;
             long millisSinceLastAction = unixTimeMilliseconds - lastActionTimeStamp; 
             sLog.LogInformation("Millis since last action: " + millisSinceLastAction);
